@@ -1,0 +1,1 @@
+export const pick=(en,uk,lang)=>lang==='uk'&&uk?uk:en;

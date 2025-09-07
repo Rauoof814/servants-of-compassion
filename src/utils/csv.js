@@ -1,0 +1,3 @@
+export const toCSV=(rows)=>!rows?.length?'':Object.keys(rows[0]).join(',')+'\n'+rows.map(r=>Object.keys(rows[0]).map(k=>JSON.stringify(r[k]??'')).join(',')).join('\n');
+export const fromCSV=(csv)=>{ if(!csv) return []; const [h,...L]=csv.trim().split(/\r?\n/); const K=h.split(','); return L.map(l=>{const m=l.match(/("[^"]*"|[^,]+)/g)||[]; const o={}; K.forEach((k,i)=>o[k]=m[i]?JSON.parse(m[i]):''); return o; }); };
+export const downloadCSV=(rows,name='data.csv')=>{const a=document.createElement('a');a.href='data:text/plain;charset=utf-8,'+encodeURIComponent(toCSV(rows));a.download=name;a.click();};

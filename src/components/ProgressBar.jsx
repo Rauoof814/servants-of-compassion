@@ -1,0 +1,1 @@
+export default function ProgressBar({value=0}){return(<div className='progress'><b style={{width:Math.min(100,value)+'%'}}/></div>);}
