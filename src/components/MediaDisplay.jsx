@@ -68,8 +68,6 @@
 import React from "react";
 import SmartEmbed from "./Embed";
 
-function isHttp(u) { return typeof u === "string" && /^https?:\/\//i.test(u); }
-
 export default function MediaDisplay({ item, className = "" }) {
     if (!item) return null;
 
@@ -85,7 +83,6 @@ export default function MediaDisplay({ item, className = "" }) {
 
     if (item.image_url || item.file_url) {
         const imageUrl = item.image_url || item.file_url;
-        if (!isHttp(imageUrl)) return null; // ignore invalid build-time paths
         return (
             <div className={className}>
                 <img
