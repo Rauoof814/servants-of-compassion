@@ -233,74 +233,65 @@
 
 import React from "react";
 import useSite from "../store/useSite";
-import { Link } from "react-router-dom";
+import fallbackLogo from "../assets/logo.png";
+
+function isHttp(u) { return typeof u === "string" && /^https?:\/\//i.test(u); }
 
 export default function Footer() {
   const { state } = useSite();
-  const brand = state?.brand || {};
-  const logoSrc = brand.logo || "/logo.png";
+  const logoSrc = isHttp(state.brand.logo) ? state.brand.logo : fallbackLogo;
 
   return (
-    <footer className="mt-20 border-t border-white/10 bg-slate-900/60 backdrop-blur">
-      <div className="container py-10 grid md:grid-cols-4 gap-8">
+    <footer className="mt-12 border-t border-white/10">
+      <div className="container py-10 grid md:grid-cols-3 gap-8">
         <div>
           <div className="flex items-center gap-3">
             <img
               src={logoSrc}
-              alt="Logo"
-              className="h-10 w-10 rounded-lg border border-white/20 object-contain"
-              loading="lazy"
-              onError={(e) => { e.currentTarget.src = "/logo.png"; }}
+              onError={(e) => (e.currentTarget.src = fallbackLogo)}
+              alt="logo"
+              className="h-10 w-10 rounded-lg border border-white/15 object-contain"
             />
             <div>
-              <div className="text-xs uppercase opacity-70">Non-Profit</div>
-              <div className="font-extrabold">{brand.name || "Servants of Compassion"}</div>
+              <div className="font-bold">{state.brand.name}</div>
+              <div className="text-xs opacity-70">
+                DELIVERING AMBULANCES & MEDICAL AID
+              </div>
             </div>
           </div>
-          {brand.address && <p className="mt-3 text-sm opacity-80">{brand.address}</p>}
-          {(brand.email || brand.phone) && (
-            <div className="mt-2 text-sm opacity-80 space-y-1">
-              {brand.email && <div>{brand.email}</div>}
-              {brand.phone && <div>{brand.phone}</div>}
-            </div>
-          )}
+          <div className="mt-3 text-sm opacity-80">
+            We are a registered non-profit helping Ukrainians with ambulances,
+            trauma kits, and community support. Your gift shortens the time
+            between injury and care.
+          </div>
+          <div className="mt-3 text-sm">
+            <div>{state.brand.address}</div>
+            <div>{state.brand.email}</div>
+            <div>{state.brand.phone}</div>
+          </div>
         </div>
 
         <div>
           <div className="font-semibold mb-2">Explore</div>
-          <div className="grid gap-1 text-sm opacity-90">
-            {[
-              ["/donate", "Donate"],
-              ["/mission", "Our Mission"],
-              ["/impact", "Impact"],
-              ["/events", "Events"],
-              ["/press", "Press & Media"],
-              ["/resources", "Resources"],
-              ["/admin", "Admin"],
-            ].map(([to, label]) => (
-              <Link key={to} to={to} className="hover:underline">{label}</Link>
-            ))}
-          </div>
-        </div>
-
-        <div>
-          <div className="font-semibold mb-2">Latest stories</div>
-          <div className="text-sm opacity-80">
-            <div>Check the blog & events for updates.</div>
-          </div>
+          <ul className="grid gap-1 text-sm opacity-85">
+            <li><a href="/donate" className="hover:underline">Donate</a></li>
+            <li><a href="/mission" className="hover:underline">Our Mission</a></li>
+            <li><a href="/impact" className="hover:underline">Impact Dashboard</a></li>
+            <li><a href="/events" className="hover:underline">Events</a></li>
+            <li><a href="/press" className="hover:underline">Press & Media</a></li>
+            <li><a href="/resources" className="hover:underline">Resources</a></li>
+            <li><a href="/admin" className="hover:underline">Admin</a></li>
+          </ul>
         </div>
 
         <div>
           <div className="font-semibold mb-2">Newsletter</div>
           <form className="grid gap-2">
             <input className="input" placeholder="Your name" />
-            <input className="input" placeholder="Email" />
+            <input className="input" placeholder="Your email" />
             <button className="btn btn-yellow">Subscribe</button>
           </form>
         </div>
-      </div>
-      <div className="border-t border-white/10 py-4 text-center text-xs opacity-70">
-        © {new Date().getFullYear()} {brand.name || "Servants of Compassion"}
       </div>
     </footer>
   );

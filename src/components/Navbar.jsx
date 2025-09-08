@@ -447,14 +447,21 @@
 
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
-import { Menu, X, ChevronDown, HandHeart, Newspaper, Activity, Users, Globe, Ambulance } from "lucide-react";
+import {
+  Menu, X, ChevronDown, HandHeart,
+  Newspaper, Activity, Users, Globe, Ambulance
+} from "lucide-react";
 import LanguageToggle from "./LanguageToggle";
 import useSite from "../store/useSite";
+import fallbackLogo from "../assets/logo.png"; // local fallback
+
+function isHttp(u) {
+  return typeof u === "string" && /^https?:\/\//i.test(u);
+}
 
 export default function Navbar() {
   const { state } = useSite();
-  const brand = state?.brand || {};
-  const logoSrc = brand.logo || "/logo.png"; // fallback to /public/logo.png
+  const logoSrc = isHttp(state.brand.logo) ? state.brand.logo : fallbackLogo;
 
   const links = [
     ["/", "Home"],
@@ -491,40 +498,77 @@ export default function Navbar() {
   }, []);
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-[5000] transition-all ${scrolled ? "bg-slate-900/85 backdrop-blur border-b border-white/10 shadow-glass" : "bg-gradient-to-b from-slate-950/80 to-transparent"
-      }`}>
-      <div className="h-0.5 bg-ukYellow" style={{ width: `${progress}%`, transition: "width .18s linear" }} />
+    <header
+      className={`fixed top-0 left-0 right-0 z-[5000] transition-all ${scrolled
+          ? "bg-slate-900/85 backdrop-blur border-b border-white/10 shadow-glass"
+          : "bg-gradient-to-b from-slate-950/80 to-transparent"
+        }`}
+    >
+      <div
+        className="h-0.5 bg-ukYellow"
+        style={{ width: `${progress}%`, transition: "width .18s linear" }}
+      />
 
       <div className="container flex items-center gap-4 py-3">
         <Link to="/" className="group flex items-center gap-3">
           <img
             src={logoSrc}
-            alt="Logo"
+            onError={(e) => (e.currentTarget.src = fallbackLogo)}
             className="h-10 w-10 rounded-xl border border-white/20 object-contain group-hover:scale-105 transition"
-            loading="lazy"
-            onError={(e) => { e.currentTarget.src = "/logo.png"; }}
+            alt="logo"
           />
           <div>
-            <div className="text-[11px] uppercase tracking-wide opacity-70">Non-Profit</div>
-            <div className="font-extrabold tracking-tight">{brand.name || "Servants of Compassion"}</div>
+            <div className="text-[11px] uppercase tracking-wide opacity-70">
+              Non-Profit
+            </div>
+            <div className="font-extrabold tracking-tight">
+              {state.brand.name}
+            </div>
           </div>
         </Link>
 
         <nav className="hidden lg:flex items-center gap-2 ml-6 flex-wrap">
           {links.map(([to, label]) => (
-            <NavLink key={to} to={to} className={({ isActive }) => `navlink ${isActive ? "bg-white/15" : ""}`}>{label}</NavLink>
+            <NavLink
+              key={to}
+              to={to}
+              className={({ isActive }) =>
+                `navlink ${isActive ? "bg-white/15" : ""}`
+              }
+            >
+              {label}
+            </NavLink>
           ))}
-          <div className="relative" onMouseEnter={() => setMega(true)} onMouseLeave={() => setMega(false)}>
-            <button className="navlink inline-flex items-center gap-1">Explore <ChevronDown className="w-4 h-4" /></button>
+
+          <div
+            className="relative"
+            onMouseEnter={() => setMega(true)}
+            onMouseLeave={() => setMega(false)}
+          >
+            <button className="navlink inline-flex items-center gap-1">
+              Explore <ChevronDown className="w-4 h-4" />
+            </button>
             {mega && (
               <div className="absolute right-0 mt-2 w-[min(92vw,760px)] max-h-[80vh] overflow-auto rounded-2xl p-4 bg-slate-900/95 backdrop-blur border border-white/10 shadow-glass z-[5100]">
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                  <Mega to="/mission" icon={<Ambulance />} title="Programs">How ambulances & supplies move.</Mega>
-                  <Mega to="/impact" icon={<Activity />} title="Impact">KPI dashboard & vehicle log.</Mega>
-                  <Mega to="/press" icon={<Newspaper />} title="Press">Coverage & media kit.</Mega>
-                  <Mega to="/volunteer" icon={<Users />} title="Volunteer">Help drive, pack, or host events.</Mega>
-                  <Mega to="/resources" icon={<Globe />} title="Resources">One-pagers & downloads.</Mega>
-                  <Mega to="/donate" icon={<HandHeart />} title="Donate">Give via Givebutter or PayPal.</Mega>
+                  <Mega to="/mission" icon={<Ambulance />} title="Programs">
+                    How ambulances & supplies move.
+                  </Mega>
+                  <Mega to="/impact" icon={<Activity />} title="Impact">
+                    KPI dashboard & vehicle log.
+                  </Mega>
+                  <Mega to="/press" icon={<Newspaper />} title="Press">
+                    Coverage & media kit.
+                  </Mega>
+                  <Mega to="/volunteer" icon={<Users />} title="Volunteer">
+                    Help drive, pack, or host events.
+                  </Mega>
+                  <Mega to="/resources" icon={<Globe />} title="Resources">
+                    One-pagers & downloads.
+                  </Mega>
+                  <Mega to="/donate" icon={<HandHeart />} title="Donate">
+                    Give via Givebutter or PayPal.
+                  </Mega>
                 </div>
               </div>
             )}
@@ -541,7 +585,9 @@ export default function Navbar() {
           </Link>
         </div>
 
-        <button className="lg:hidden btn" onClick={() => setOpen(true)}><Menu className="w-5 h-5" /></button>
+        <button className="lg:hidden btn" onClick={() => setOpen(true)}>
+          <Menu className="w-5 h-5" />
+        </button>
       </div>
 
       {open && (
@@ -549,19 +595,33 @@ export default function Navbar() {
           <div className="absolute inset-y-0 right-0 w-[86%] sm:w-[400px] bg-slate-900 border-l border-white/10 p-5 overflow-y-auto">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <img src={logoSrc} alt="Logo" className="h-9 w-9 rounded-lg border border-white/20" onError={(e) => { e.currentTarget.src = "/logo.png"; }} />
-                <div className="font-bold">{brand.name || "Servants of Compassion"}</div>
+                <img
+                  src={logoSrc}
+                  onError={(e) => (e.currentTarget.src = fallbackLogo)}
+                  className="h-9 w-9 rounded-lg border border-white/20"
+                  alt="logo"
+                />
+                <div className="font-bold">{state.brand.name}</div>
               </div>
-              <button className="btn" onClick={() => setOpen(false)}><X className="w-5 h-5" /></button>
+              <button className="btn" onClick={() => setOpen(false)}>
+                <X className="w-5 h-5" />
+              </button>
             </div>
             <div className="mt-5 grid gap-1">
               {links.concat([["/donate", "Donate"]]).map(([to, label]) => (
-                <NavLink key={to} to={to} onClick={() => setOpen(false)} className="px-3 py-2 rounded-xl hover:bg-white/10">
+                <NavLink
+                  key={to}
+                  to={to}
+                  onClick={() => setOpen(false)}
+                  className="px-3 py-2 rounded-xl hover:bg-white/10"
+                >
                   {label}
                 </NavLink>
               ))}
             </div>
-            <div className="mt-5"><LanguageToggle /></div>
+            <div className="mt-5">
+              <LanguageToggle />
+            </div>
           </div>
         </div>
       )}
@@ -571,7 +631,10 @@ export default function Navbar() {
 
 function Mega({ to, icon, title, children }) {
   return (
-    <Link to={to} className="rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 p-4 transition grid gap-1">
+    <Link
+      to={to}
+      className="rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 p-4 transition grid gap-1"
+    >
       <div className="flex items-center gap-2">
         <span className="p-2 rounded-lg bg-white/10">{icon}</span>
         <div className="font-semibold">{title}</div>
