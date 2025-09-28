@@ -2,146 +2,451 @@
 @tailwind components;
 @tailwind utilities;
 
+/* @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap'); */
+
+:root {
+    --nav-safe: 80px;
+    --ukBlue: #0057B7;
+    --ukYellow: #FFD700;
+    --transition-slow: 0.6s;
+    --transition-fast: 0.3s;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    color: white;
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* Container utilities */
 .container {
-    @apply max-w-7xl mx-auto px-4
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
 }
 
 .section {
-    @apply py-14
+    @apply py-16 lg:py-24;
 }
 
+/* Card component */
 .card {
-    @apply rounded-2xl bg-white/5 border border-white/10 backdrop-blur shadow-glass
+    @apply rounded-2xl bg-white/5 border border-white/10 backdrop-blur-lg shadow-2xl;
+    transition: all var(--transition-fast) ease;
 }
 
+.card:hover {
+    @apply bg-white/10 border-white/20;
+    transform: translateY(-2px);
+}
+
+/* Button components */
 .btn {
-    @apply inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl border border-white/10 bg-white/10 hover:bg-white/20 transition
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-300 transform;
+}
+
+.btn:hover {
+    transform: translateY(-1px) scale(1.02);
 }
 
 .btn-primary {
-    @apply bg-ukBlue border-transparent
+    @apply bg-ukBlue text-white border-transparent hover:bg-ukBlue/90;
 }
 
 .btn-yellow {
-    @apply bg-ukYellow text-black border-transparent hover:bg-yellow-300
+    @apply bg-ukYellow text-gray-900 border-transparent hover:bg-ukYellow/90;
 }
 
+.btn-glass {
+    @apply bg-white/10 backdrop-blur-md border border-white/20 text-white hover:bg-white/20;
+}
+
+/* Navigation */
 .navlink {
-    @apply px-3 py-2 rounded-xl hover:bg-white/10
+    @apply px-4 py-2 rounded-xl transition-all duration-300 hover:bg-white/10;
 }
 
+/* Typography */
 .h1 {
-    @apply text-5xl md:text-6xl font-black
+    @apply text-4xl sm:text-5xl lg:text-6xl font-black leading-tight;
 }
 
 .h2 {
-    @apply text-3xl font-extrabold
+    @apply text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight;
 }
 
 .h3 {
-    @apply text-xl font-bold
+    @apply text-2xl sm:text-3xl font-semibold;
 }
 
+.h4 {
+    @apply text-xl font-semibold;
+}
+
+/* Form elements */
 .input {
-    @apply w-full px-3 py-2 rounded-xl bg-slate-900/60 border border-white/10 outline-none focus:ring-2 ring-ukYellow
+    @apply w-full px-4 py-3 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/50 outline-none focus:ring-2 ring-ukYellow transition-all;
 }
 
+/* .textarea {
+    @apply input resize-vertical min-h-[120px];
+} */
+
+.select {
+    @apply input;
+}
+
+/* Progress bars */
 .progress {
-    @apply h-3 w-full bg-white/10 rounded-full overflow-hidden
+    @apply h-2 w-full bg-white/10 rounded-full overflow-hidden;
 }
 
-.progress>b {
-    @apply block h-full bg-ukYellow
+.progress-bar {
+    @apply block h-full bg-ukYellow transition-all duration-1000;
 }
 
-.hero-media video, .hero-media img {
+/* Hero media */
+.hero-media {
+    aspect-ratio: 16/9;
+}
+
+.hero-media iframe,
+.hero-media video,
+.hero-media img {
     width: 100%;
     height: 100%;
-    object-fit: cover
+    object-fit: cover;
+    border-radius: inherit;
 }
 
-.pill {
-    @apply inline-flex items-center justify-center w-9 h-9 rounded-xl border border-white/10 bg-white/10;
+/* Utility classes */
+.glass-effect {
+    @apply bg-white/10 backdrop-blur-md border border-white/20;
 }
 
-.hover-card:hover {
-    @apply bg-white/10 translate-y-[-2px];
-    transition: all .25s;
+.text-gradient {
+    background: linear-gradient(135deg, var(--ukYellow) 0%, var(--ukBlue) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
-
-/* prevent accidental horizontal scroll on any page */
-html,
-body,
-#root {
-    max-width: 100%;
-    overflow-x: hidden;
+.border-gradient {
+    border: 2px solid transparent;
+    background: linear-gradient(45deg, var(--ukBlue), var(--ukYellow)) border-box;
+    mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
 }
 
-/* soft edge masks for our marquee/ticker components */
-.mask-edges {
-    -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
-    mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+/* Animations */
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
 }
 
-/* guarantee no sideways scroll and let fixed navbar float above */
-html,
-body,
-#root {
-    max-width: 100%;
-    overflow-x: hidden;
+@keyframes pulse-glow {
+
+    0%,
+    100% {
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+    }
+
+    50% {
+        box-shadow: 0 0 40px rgba(255, 215, 0, 0.6);
+    }
 }
 
-/* small utility used by marquees to fade edges (optional) */
-.mask-edges {
-    -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
-    mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+@keyframes slide-in {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
 }
 
+@keyframes fade-in-up {
+    from {
+        transform: translateY(30px);
+        opacity: 0;
+    }
 
-
-/* Fixed navbar safe area (single source of truth) */
-:root {
-    --nav-safe: 105px;
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
-/* Push content below the fixed header */
+.animate-float {
+    animation: float 3s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.animate-slide-in {
+    animation: slide-in 0.5s ease-out;
+}
+
+.animate-fade-in-up {
+    animation: fade-in-up 0.6s ease-out;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, var(--ukYellow) 0%, var(--ukBlue) 100%);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, var(--ukYellow) 0%, var(--ukBlue) 100%);
+    opacity: 0.8;
+}
+
+/* Safe area for fixed navbar */
 body {
     padding-top: var(--nav-safe) !important;
 }
 
-/* If your first sibling after <Navbar /> isn't the content,
-   this ensures the first real content block is offset too */
 #root>header+* {
     margin-top: var(--nav-safe) !important;
 }
 
-/* Home hero opt-out (so it doesn't double-space) */
 .hero {
     margin-top: calc(var(--nav-safe) * -1);
 }
 
-/* Anchor offsets behave under fixed header */
 :where([id], h1, h2, h3, h4, h5, h6, section) {
     scroll-margin-top: var(--nav-safe);
 }
 
-
-.hero-media {
-    aspect-ratio: 16 / 9;
-}
-
-.hero-media iframe,
-.hero-media video {
-    width: 100%;
-    height: 100%;
-    display: block;
-}
-
-
-/* Optional: tweak for large screens if your header grows */
-@media (min-width: 1024px) {
+/* Responsive adjustments */
+@media (max-width: 768px) {
     :root {
-        --nav-safe: 96px;
+        --nav-safe: 70px;
     }
+
+    .container {
+        @apply px-4;
+    }
+
+    .section {
+        @apply py-12;
+    }
+
+    .h1 {
+        @apply text-3xl sm:text-4xl;
+    }
+
+    .h2 {
+        @apply text-2xl sm:text-3xl;
+    }
+
+    .btn {
+        @apply px-4 py-2 text-sm;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .card {
+        @apply bg-gray-900 border-2 border-white;
+    }
+
+    .btn {
+        @apply border-2;
+    }
+
+    .input {
+        @apply border-2;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Print styles */
+@media print {
+
+    .hero-media,
+    .btn,
+    .navlink {
+        display: none !important;
+    }
+
+    body {
+        color: black !important;
+        background: white !important;
+    }
+
+    .card {
+        background: white !important;
+        border: 1px solid #ccc !important;
+        color: black !important;
+    }
+}
+
+/* Language toggle specific styles */
+.language-toggle {
+    @apply flex items-center space-x-2 p-2 rounded-xl bg-white/10 hover:bg-white/20 transition-colors;
+}
+
+.language-option {
+    @apply px-3 py-1 rounded-lg transition-all cursor-pointer;
+}
+
+.language-option.active {
+    @apply bg-ukYellow text-gray-900;
+}
+
+.language-option:not(.active) {
+    @apply text-white/70 hover:text-white;
+}
+
+/* Enhanced gallery styles */
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.gallery-item {
+    @apply rounded-xl overflow-hidden border border-white/10 transition-all duration-300;
+}
+
+.gallery-item:hover {
+    @apply border-ukYellow/50 scale-105;
+    box-shadow: 0 10px 30px rgba(255, 215, 0, 0.2);
+}
+
+/* Statistics counter */
+.counter {
+    @apply text-4xl md:text-5xl font-bold text-ukYellow;
+}
+
+/* Testimonial carousel */
+.testimonial-carousel {
+    @apply relative overflow-hidden;
+}
+
+.testimonial-item {
+    @apply absolute inset-0 opacity-0 transition-all duration-500;
+}
+
+.testimonial-item.active {
+    @apply opacity-100 relative;
+}
+
+/* Loading states */
+.skeleton {
+    @apply bg-white/10 animate-pulse rounded-xl;
+}
+
+.skeleton-text {
+    @apply skeleton h-4 rounded;
+}
+
+/* Focus states for accessibility */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible {
+    @apply outline-2 outline-offset-2 outline-ukYellow;
+}
+
+/* Dark mode enhancements (if needed) */
+@media (prefers-color-scheme: dark) {
+    .card {
+        @apply bg-gray-900/80;
+    }
+}
+
+/* Custom utilities */
+.backdrop-blur-glass {
+    backdrop-filter: blur(16px) saturate(180%);
+    background-color: rgba(17, 25, 40, 0.75);
+}
+
+.gradient-text-blue-yellow {
+    background: linear-gradient(135deg, var(--ukBlue) 0%, var(--ukYellow) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.gradient-bg-blue-yellow {
+    background: linear-gradient(135deg, var(--ukBlue) 0%, var(--ukYellow) 100%);
+}
+
+.hover-lift {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+/* Mobile menu animations */
+.mobile-menu-enter {
+    transform: translateX(100%);
+}
+
+.mobile-menu-enter-active {
+    transform: translateX(0);
+    transition: transform 0.3s ease-in-out;
+}
+
+.mobile-menu-exit {
+    transform: translateX(0);
+}
+
+.mobile-menu-exit-active {
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Custom checkbox and radio buttons */
+.custom-checkbox {
+    @apply w-5 h-5 rounded border border-white/20 bg-white/10 focus:ring-2 focus:ring-ukYellow focus:ring-offset-2 focus:ring-offset-gray-900;
+}
+
+.custom-radio {
+    @apply w-5 h-5 rounded-full border border-white/20 bg-white/10 focus:ring-2 focus:ring-ukYellow focus:ring-offset-2 focus:ring-offset-gray-900;
 }

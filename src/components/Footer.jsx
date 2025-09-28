@@ -1,296 +1,289 @@
-// import React from "react";
-// import { Link } from "react-router-dom";
-// import { Facebook, Instagram, Twitter, Mail, MapPin, Phone } from "lucide-react";
-// import useSite from "../store/useSite";
-
-// export default function Footer() {
-//   const { state } = useSite();
-//   const s = state.brand.social || {};
-//   const posts = (state.blog || []).slice(0, 3);
-//   const photos = [
-//     "/src/assets/photos/photo_1.jpg",
-//     "/src/assets/photos/photo_2.jpg",
-//     "/src/assets/photos/photo_3.jpg",
-//     "/src/assets/photos/photo_4.jpg",
-//     "/src/assets/photos/photo_9.jpg",
-//     "/src/assets/photos/photo_11.jpg",
-//   ].filter(Boolean);
-
-//   const onNewsletter = (e) => {
-//     e.preventDefault();
-//     const f = new FormData(e.currentTarget);
-//     const n = Object.fromEntries(f.entries());
-//     const list = [
-//       { id: crypto.randomUUID(), ...n, date: new Date().toISOString() },
-//       ...(state.newsletter || []),
-//     ];
-//     localStorage.setItem(
-//       "soc_state_v2",
-//       JSON.stringify({ ...state, newsletter: list })
-//     );
-//     e.currentTarget.reset();
-//     alert("Thanks! You’re on the list.");
-//   };
-
-//   return (
-//     <footer className="mt-24 relative">
-//       {/* decorative wave */}
-//       <div className="pointer-events-none absolute -top-16 left-0 w-full opacity-70">
-//         <svg viewBox="0 0 1440 140" className="w-full h-[140px]">
-//           <path
-//             fill="url(#g)"
-//             d="M0,96L80,85.3C160,75,320,53,480,64C640,75,800,117,960,128C1120,139,1280,117,1360,106.7L1440,96L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z"
-//           />
-//           <defs>
-//             <linearGradient id="g" x1="0" x2="1">
-//               <stop offset="0%" stopColor="#0057B7" />
-//               <stop offset="100%" stopColor="#FFD500" />
-//             </linearGradient>
-//           </defs>
-//         </svg>
-//       </div>
-
-//       <div className="bg-slate-900/90 backdrop-blur border-t border-white/10">
-//         <div className="container py-14">
-//           {/* top row: brand + quick donate */}
-//           <div className="grid lg:grid-cols-[1.5fr,1fr,1fr,1fr] gap-10">
-//             {/* Brand / about */}
-//             <div>
-//               <div className="flex items-center gap-3">
-//                 <img
-//                   src={state.brand.logo}
-//                   className="h-12 w-12 rounded-xl border border-white/20 object-contain"
-//                 />
-//                 <div>
-//                   <div className="font-black text-xl">
-//                     {state.brand.name}
-//                   </div>
-//                   <div className="text-[11px] uppercase tracking-wider opacity-70">
-//                     Delivering ambulances & medical aid
-//                   </div>
-//                 </div>
-//               </div>
-//               <p className="mt-4 opacity-90">
-//                 We are a registered non-profit helping Ukrainians with ambulances,
-//                 trauma kits, and community support. Your gift shortens the time
-//                 between injury and care.
-//               </p>
-
-//               {/* photo strip */}
-//               <div className="mt-4 grid grid-cols-6 gap-2">
-//                 {photos.map((src, i) => (
-//                   <img
-//                     key={i}
-//                     src={src}
-//                     className="h-16 w-full object-cover rounded-lg border border-white/10"
-//                   />
-//                 ))}
-//               </div>
-//             </div>
-
-//             {/* Explore */}
-//             <div>
-//               <div className="h3 mb-3">Explore</div>
-//               <ul className="space-y-2 opacity-90">
-//                 <li><Link className="hover:underline" to="/donate">Donate</Link></li>
-//                 <li><Link className="hover:underline" to="/mission">Our Mission</Link></li>
-//                 <li><Link className="hover:underline" to="/impact">Impact Dashboard</Link></li>
-//                 <li><Link className="hover:underline" to="/events">Events</Link></li>
-//                 <li><Link className="hover:underline" to="/volunteer">Volunteer</Link></li>
-//                 <li><Link className="hover:underline" to="/press">Press & Media</Link></li>
-//                 <li><Link className="hover:underline" to="/resources">Resources</Link></li>
-//                 <li><Link className="hover:underline" to="/admin">Admin</Link></li>
-//               </ul>
-//             </div>
-
-//             {/* Latest stories */}
-//             <div>
-//               <div className="h3 mb-3">Latest stories</div>
-//               <ul className="space-y-3">
-//                 {posts.map((p) => (
-//                   <li key={p.id} className="flex gap-3">
-//                     {p.image && (
-//                       <img
-//                         src={p.image}
-//                         className="h-12 w-16 rounded-lg object-cover border border-white/10"
-//                       />
-//                     )}
-//                     <div className="text-sm">
-//                       <Link className="font-semibold hover:underline" to={`/blog/${p.id}`}>
-//                         {p.title}
-//                       </Link>
-//                       <div className="opacity-70">
-//                         {new Date(p.date).toLocaleDateString()}
-//                       </div>
-//                     </div>
-//                   </li>
-//                 ))}
-//                 {posts.length === 0 && (
-//                   <li className="opacity-70 text-sm">No posts yet.</li>
-//                 )}
-//               </ul>
-//             </div>
-
-//             {/* Newsletter & contact */}
-//             <div>
-//               <div className="h3 mb-3">Newsletter</div>
-//               <form onSubmit={onNewsletter} className="grid gap-2">
-//                 <input name="name" placeholder="Your name" className="input" />
-//                 <input
-//                   name="email"
-//                   type="email"
-//                   placeholder="Email"
-//                   className="input"
-//                   required
-//                 />
-//                 <button className="btn btn-yellow">Subscribe</button>
-//               </form>
-
-//               <div className="h3 mt-6 mb-2">Contact</div>
-//               <div className="text-sm opacity-90 flex items-center gap-2">
-//                 <MapPin className="w-4 h-4" /> {state.brand.address}
-//               </div>
-//               <a
-//                 href={`mailto:${state.brand.email}`}
-//                 className="text-sm opacity-90 flex items-center gap-2 hover:underline"
-//               >
-//                 <Mail className="w-4 h-4" /> {state.brand.email}
-//               </a>
-//               <a
-//                 href={`tel:${state.brand.phone}`}
-//                 className="text-sm opacity-90 flex items-center gap-2 hover:underline"
-//               >
-//                 <Phone className="w-4 h-4" /> {state.brand.phone}
-//               </a>
-
-//               {/* social */}
-//               <div className="flex gap-3 mt-4">
-//                 {s.facebook && (
-//                   <a
-//                     href={s.facebook}
-//                     target="_blank"
-//                     className="p-2 rounded-lg border border-white/10 hover:bg-white/10"
-//                     aria-label="Facebook"
-//                   >
-//                     <Facebook className="w-4 h-4" />
-//                   </a>
-//                 )}
-//                 {s.instagram && (
-//                   <a
-//                     href={s.instagram}
-//                     target="_blank"
-//                     className="p-2 rounded-lg border border-white/10 hover:bg-white/10"
-//                     aria-label="Instagram"
-//                   >
-//                     <Instagram className="w-4 h-4" />
-//                   </a>
-//                 )}
-//                 {s.twitter && (
-//                   <a
-//                     href={s.twitter}
-//                     target="_blank"
-//                     className="p-2 rounded-lg border border-white/10 hover:bg-white/10"
-//                     aria-label="Twitter / X"
-//                   >
-//                     <Twitter className="w-4 h-4" />
-//                   </a>
-//                 )}
-//               </div>
-
-//               {/* trust badges */}
-//               <div className="mt-4 flex flex-wrap items-center gap-2 text-[11px] uppercase tracking-wider">
-//                 <span className="px-2 py-1 rounded-full bg-white/10 border border-white/10">
-//                   Givebutter
-//                 </span>
-//                 <span className="px-2 py-1 rounded-full bg-white/10 border border-white/10">
-//                   PayPal
-//                 </span>
-//                 <span className="px-2 py-1 rounded-full bg-white/10 border border-white/10">
-//                   Transparency Log
-//                 </span>
-//               </div>
-//             </div>
-//           </div>
-
-//           {/* bottom legal row */}
-//           <div className="mt-10 border-t border-white/10 pt-4 flex flex-col md:flex-row items-center justify-between gap-3 text-xs opacity-70">
-//             <div>
-//               © {new Date().getFullYear()} {state.brand.name}. All rights reserved.
-//             </div>
-//             <div className="flex gap-3">
-//               <Link to="/resources">Privacy</Link>
-//               <Link to="/resources">Terms</Link>
-//               <a href="#top">Back to top ↑</a>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </footer>
-//   );
-// }
-
-
-
 import React from "react";
+import { Link } from "react-router-dom";
+import {
+  Facebook, Instagram, Twitter, Mail, MapPin, Phone,
+  Heart, Shield, Award, Clock, Users, Ambulance, Send
+} from "lucide-react";
+import { motion } from "framer-motion";
 import useSite from "../store/useSite";
-import fallbackLogo from "../assets/logo.png";
-
-function isHttp(u) { return typeof u === "string" && /^https?:\/\//i.test(u); }
 
 export default function Footer() {
   const { state } = useSite();
-  const logoSrc = isHttp(state.brand.logo) ? state.brand.logo : fallbackLogo;
+  const brand = state?.brand || {};
+  const social = brand.social || {};
+
+  const currentYear = new Date().getFullYear();
+
+  const FadeIn = ({ children, delay = 0 }) => (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, delay }}
+      viewport={{ once: true }}
+    >
+      {children}
+    </motion.div>
+  );
+
+  const handleNewsletterSubmit = (e) => {
+    e.preventDefault();
+    // Handle newsletter subscription
+    alert("Thank you for subscribing to our newsletter!");
+    e.target.reset();
+  };
 
   return (
-    <footer className="mt-12 border-t border-white/10">
-      <div className="container py-10 grid md:grid-cols-3 gap-8">
-        <div>
-          <div className="flex items-center gap-3">
-            <img
-              src={logoSrc}
-              onError={(e) => (e.currentTarget.src = fallbackLogo)}
-              alt="logo"
-              className="h-10 w-10 rounded-lg border border-white/15 object-contain"
-            />
-            <div>
-              <div className="font-bold">{state.brand.name}</div>
-              <div className="text-xs opacity-70">
-                DELIVERING AMBULANCES & MEDICAL AID
+    <footer className="relative bg-gray-900 border-t border-white/10 overflow-hidden">
+      {/* Background elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-20 -left-20 w-40 h-40 bg-ukBlue/10 rounded-full blur-3xl"></div>
+        <div className="absolute -bottom-20 -right-20 w-40 h-40 bg-ukYellow/10 rounded-full blur-3xl"></div>
+      </div>
+
+      <div className="relative z-10">
+        {/* Main footer content */}
+        <div className="container py-16">
+          <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-8">
+            {/* Brand column */}
+            <div className="lg:col-span-1">
+              <FadeIn>
+                <div className="flex items-center space-x-3 mb-6">
+                  {/* Logo frame: fixed square + object-contain */}
+                  <div className="w-14 h-14 rounded-xl border border-white/15 bg-slate-800/40 p-1 flex items-center justify-center overflow-hidden">
+                    <img
+                      src={brand.logo || "/logo.png"}
+                      alt={brand.name || "Servants of Compassion"}
+                      className="max-w-full max-h-full object-contain"
+                      onError={(e) => { e.currentTarget.src = "/logo.png"; }}
+                    />
+                  </div>
+
+                  <div>
+                    <div className="font-bold text-white text-xl leading-tight">
+                      {brand.name || "Servants of Compassion"}
+                    </div>
+                    <div className="text-white/60 text-sm">Delivering hope and emergency care</div>
+                  </div>
+                </div>
+              </FadeIn>
+
+              <FadeIn delay={0.1}>
+                <p className="text-white/70 mb-6 leading-relaxed">
+                  We are a registered non-profit organization dedicated to providing critical
+                  medical aid and support to communities in need across Ukraine. Your support
+                  helps us deliver ambulances, trauma kits, and life-saving equipment.
+                </p>
+              </FadeIn>
+
+              <FadeIn delay={0.2}>
+                <div className="flex space-x-3">
+                  {social.facebook && (
+                    <a
+                      href={social.facebook}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-3 bg-white/10 rounded-xl text-white hover:bg-ukBlue hover:text-white transition-all"
+                      aria-label="Facebook"
+                    >
+                      <Facebook className="w-5 h-5" />
+                    </a>
+                  )}
+                  {social.instagram && (
+                    <a
+                      href={social.instagram}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-3 bg-white/10 rounded-xl text-white hover:bg-pink-600 hover:text-white transition-all"
+                      aria-label="Instagram"
+                    >
+                      <Instagram className="w-5 h-5" />
+                    </a>
+                  )}
+                  {social.twitter && (
+                    <a
+                      href={social.twitter}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-3 bg-white/10 rounded-xl text-white hover:bg-blue-400 hover:text-white transition-all"
+                      aria-label="Twitter"
+                    >
+                      <Twitter className="w-5 h-5" />
+                    </a>
+                  )}
+                </div>
+              </FadeIn>
+            </div>
+
+            {/* Quick links */}
+            <FadeIn delay={0.3}>
+              <div>
+                <h3 className="text-white font-semibold text-lg mb-6 flex items-center">
+                  <Users className="w-5 h-5 mr-2 text-ukYellow" />
+                  Quick Links
+                </h3>
+                <ul className="space-y-3">
+                  {[
+                    { path: "/about", label: "About Us" },
+                    { path: "/mission", label: "Our Mission" },
+                    { path: "/impact", label: "Impact Dashboard" },
+                    { path: "/events", label: "Events" },
+                    { path: "/stories", label: "Success Stories" },
+                    { path: "/resources", label: "Resources" },
+                    { path: "/contact", label: "Contact Us" },
+                    { path: "/admin", label: "Admin Portal" }
+                  ].map((link) => (
+                    <li key={link.path}>
+                      <Link
+                        to={link.path}
+                        className="text-white/70 hover:text-ukYellow transition-colors flex items-center group"
+                      >
+                        <span className="w-2 h-2 bg-ukYellow/0 rounded-full mr-3 group-hover:bg-ukYellow transition-all"></span>
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </FadeIn>
+
+            {/* Programs */}
+            <FadeIn delay={0.4}>
+              <div>
+                <h3 className="text-white font-semibold text-lg mb-6 flex items-center">
+                  <Ambulance className="w-5 h-5 mr-2 text-ukYellow" />
+                  Our Programs
+                </h3>
+                <ul className="space-y-3">
+                  {[
+                    { label: "Ambulance Deployment", desc: "Emergency vehicle delivery" },
+                    { label: "Medical Supplies", desc: "Trauma kits and equipment" },
+                    { label: "Training Programs", desc: "Medic and first responder training" },
+                    { label: "Community Support", desc: "Local community initiatives" },
+                    { label: "Emergency Response", desc: "24/7 crisis response" },
+                    { label: "Volunteer Network", desc: "Global volunteer community" }
+                  ].map((program, index) => (
+                    <li key={index} className="group">
+                      <div className="text-white font-medium group-hover:text-ukYellow transition-colors">
+                        {program.label}
+                      </div>
+                      <div className="text-white/60 text-sm">
+                        {program.desc}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </FadeIn>
+
+            {/* Contact & Newsletter */}
+            <FadeIn delay={0.5}>
+              <div>
+                <h3 className="text-white font-semibold text-lg mb-6 flex items-center">
+                  <Mail className="w-5 h-5 mr-2 text-ukYellow" />
+                  Stay Connected
+                </h3>
+
+                {/* Contact info */}
+                <div className="space-y-3 mb-6">
+                  {brand.address && (
+                    <div className="flex items-start space-x-3 text-white/70">
+                      <MapPin className="w-5 h-5 text-ukYellow flex-shrink-0 mt-1" />
+                      <span>{brand.address}</span>
+                    </div>
+                  )}
+                  {brand.email && (
+                    <a
+                      href={`mailto:${brand.email}`}
+                      className="flex items-center space-x-3 text-white/70 hover:text-ukYellow transition-colors"
+                    >
+                      <Mail className="w-5 h-5 text-ukYellow" />
+                      <span>{brand.email}</span>
+                    </a>
+                  )}
+                  {brand.phone && (
+                    <a
+                      href={`tel:${brand.phone}`}
+                      className="flex items-center space-x-3 text-white/70 hover:text-ukYellow transition-colors"
+                    >
+                      <Phone className="w-5 h-5 text-ukYellow" />
+                      <span>{brand.phone}</span>
+                    </a>
+                  )}
+                </div>
+
+                {/* Newsletter signup */}
+                <div className="bg-white/5 rounded-2xl p-4 border border-white/10">
+                  <h4 className="text-white font-medium mb-3">Newsletter Signup</h4>
+                  <p className="text-white/60 text-sm mb-4">
+                    Get updates on our mission and impact
+                  </p>
+                  <form onSubmit={handleNewsletterSubmit} className="space-y-3">
+                    <input
+                      type="email"
+                      placeholder="Your email address"
+                      className="w-full px-4 py-2 rounded-xl bg-white/10 border border-white/20 text-white placeholder-white/50 text-sm"
+                      required
+                    />
+                    <button
+                      type="submit"
+                      className="w-full bg-ukYellow text-gray-900 font-semibold py-2 px-4 rounded-xl hover:bg-ukYellow/90 transition-colors flex items-center justify-center"
+                    >
+                      <Send className="w-4 h-4 mr-2" />
+                      Subscribe
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </FadeIn>
+          </div>
+
+          {/* Trust badges */}
+          <FadeIn delay={0.6}>
+            <div className="grid md:grid-cols-4 gap-6 mt-16 pt-8 border-t border-white/10">
+              {[
+                { icon: <Shield className="w-8 h-8" />, label: "Verified Non-Profit", desc: "Fully registered and transparent" },
+                { icon: <Heart className="w-8 h-8" />, label: "100% Donation Policy", desc: "Every dollar makes an impact" },
+                { icon: <Award className="w-8 h-8" />, label: "Award-Winning", desc: "Recognized for excellence" },
+                { icon: <Clock className="w-8 h-8" />, label: "24/7 Response", desc: "Always ready to help" }
+              ].map((badge, index) => (
+                <div key={index} className="text-center">
+                  <div className="text-ukYellow mb-3 flex justify-center">{badge.icon}</div>
+                  <div className="text-white font-semibold mb-1">{badge.label}</div>
+                  <div className="text-white/60 text-sm">{badge.desc}</div>
+                </div>
+              ))}
+            </div>
+          </FadeIn>
+        </div>
+
+        {/* Bottom bar */}
+        <div className="border-t border-white/10 py-6">
+          <div className="container">
+            <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+              <div className="text-white/60 text-sm">
+                © {currentYear} Servants of Compassion. All rights reserved.
+              </div>
+
+              <div className="flex flex-wrap justify-center space-x-6 text-sm">
+                <Link to="/privacy" className="text-white/60 hover:text-ukYellow transition-colors">
+                  Privacy Policy
+                </Link>
+                <Link to="/terms" className="text-white/60 hover:text-ukYellow transition-colors">
+                  Terms of Service
+                </Link>
+                <Link to="/transparency" className="text-white/60 hover:text-ukYellow transition-colors">
+                  Transparency Report
+                </Link>
+                <Link to="/financials" className="text-white/60 hover:text-ukYellow transition-colors">
+                  Financial Reports
+                </Link>
+              </div>
+
+              <div className="text-white/60 text-sm">
+                Made with ❤️ for Ukraine
               </div>
             </div>
           </div>
-          <div className="mt-3 text-sm opacity-80">
-            We are a registered non-profit helping Ukrainians with ambulances,
-            trauma kits, and community support. Your gift shortens the time
-            between injury and care.
-          </div>
-          <div className="mt-3 text-sm">
-            <div>{state.brand.address}</div>
-            <div>{state.brand.email}</div>
-            <div>{state.brand.phone}</div>
-          </div>
-        </div>
-
-        <div>
-          <div className="font-semibold mb-2">Explore</div>
-          <ul className="grid gap-1 text-sm opacity-85">
-            <li><a href="/donate" className="hover:underline">Donate</a></li>
-            <li><a href="/mission" className="hover:underline">Our Mission</a></li>
-            <li><a href="/impact" className="hover:underline">Impact Dashboard</a></li>
-            <li><a href="/events" className="hover:underline">Events</a></li>
-            <li><a href="/press" className="hover:underline">Press & Media</a></li>
-            <li><a href="/resources" className="hover:underline">Resources</a></li>
-            <li><a href="/admin" className="hover:underline">Admin</a></li>
-          </ul>
-        </div>
-
-        <div>
-          <div className="font-semibold mb-2">Newsletter</div>
-          <form className="grid gap-2">
-            <input className="input" placeholder="Your name" />
-            <input className="input" placeholder="Your email" />
-            <button className="btn btn-yellow">Subscribe</button>
-          </form>
         </div>
       </div>
     </footer>

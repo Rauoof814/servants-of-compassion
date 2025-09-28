@@ -1501,85 +1501,219 @@ export default function Admin() {
                     )}
 
                     {/* ----- BRAND & SOCIAL ----- */}
+
                     {tab === "brand" && (
-                        <div className="card p-6 grid md:grid-cols-2 gap-3">
-                            <label className="label">Name</label>
-                            <input
-                                className="input"
-                                value={brand.name}
-                                onChange={(e) => setBrand({ ...brand, name: e.target.value })}
-                            />
-                            <label className="label">Logo URL</label>
-                            <input
-                                className="input"
-                                value={brand.logo}
-                                onChange={(e) => setBrand({ ...brand, logo: e.target.value })}
-                            />
-                            <label className="label">Address</label>
-                            <input
-                                className="input"
-                                value={brand.address}
-                                onChange={(e) => setBrand({ ...brand, address: e.target.value })}
-                            />
-                            <label className="label">Email</label>
-                            <input
-                                className="input"
-                                value={brand.email}
-                                onChange={(e) => setBrand({ ...brand, email: e.target.value })}
-                            />
-                            <label className="label">Phone</label>
-                            <input
-                                className="input"
-                                value={brand.phone}
-                                onChange={(e) => setBrand({ ...brand, phone: e.target.value })}
-                            />
-                            <label className="label">Facebook</label>
-                            <input
-                                className="input"
-                                value={brand.social.facebook || ""}
-                                onChange={(e) =>
-                                    setBrand({
-                                        ...brand,
-                                        social: { ...brand.social, facebook: e.target.value },
-                                    })
-                                }
-                            />
-                            <label className="label">Instagram</label>
-                            <input
-                                className="input"
-                                value={brand.social.instagram || ""}
-                                onChange={(e) =>
-                                    setBrand({
-                                        ...brand,
-                                        social: { ...brand.social, instagram: e.target.value },
-                                    })
-                                }
-                            />
-                            <label className="label">Twitter / X</label>
-                            <input
-                                className="input"
-                                value={brand.social.twitter || ""}
-                                onChange={(e) =>
-                                    setBrand({
-                                        ...brand,
-                                        social: { ...brand.social, twitter: e.target.value },
-                                    })
-                                }
-                            />
-                            <div className="md:col-span-2">
+                        <div className="card p-6">
+                            <div className="h3 mb-6">Brand & Social Settings</div>
+
+                            <div className="grid md:grid-cols-2 gap-6">
+                                {/* Brand Information */}
+                                <div className="space-y-4">
+                                    <h4 className="h4 text-ukYellow">Brand Identity</h4>
+
+                                    <div>
+                                        <label className="label">Organization Name</label>
+                                        <input
+                                            className="input"
+                                            value={brand.name || ""}
+                                            onChange={(e) => setBrand({ ...brand, name: e.target.value })}
+                                            placeholder="Servants of Compassion"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label className="label">Logo</label>
+                                        <div className="flex items-center gap-4 mb-3">
+                                            {brand.logo && (
+                                                <img
+                                                    src={brand.logo}
+                                                    alt="Current logo"
+                                                    className="w-16 h-16 rounded-lg object-contain border border-white/10"
+                                                    onError={(e) => e.target.style.display = 'none'}
+                                                />
+                                            )}
+                                            <input
+                                                type="file"
+                                                accept="image/*"
+                                                className="input"
+                                                onChange={async (e) => {
+                                                    const file = e.target.files?.[0];
+                                                    if (file) {
+                                                        try {
+                                                            const logoUrl = await uploadToMedia("brand", file);
+                                                            setBrand({ ...brand, logo: logoUrl });
+                                                            alert("Logo uploaded successfully!");
+                                                        } catch (error) {
+                                                            alert("Failed to upload logo: " + error.message);
+                                                        }
+                                                    }
+                                                }}
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label className="label">Address</label>
+                                        <input
+                                            className="input"
+                                            value={brand.address || ""}
+                                            onChange={(e) => setBrand({ ...brand, address: e.target.value })}
+                                            placeholder="123 Main St, Seattle, WA"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label className="label">Email</label>
+                                        <input
+                                            className="input"
+                                            type="email"
+                                            value={brand.email || ""}
+                                            onChange={(e) => setBrand({ ...brand, email: e.target.value })}
+                                            placeholder="info@servantsofcompassion.org"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label className="label">Phone</label>
+                                        <input
+                                            className="input"
+                                            type="tel"
+                                            value={brand.phone || ""}
+                                            onChange={(e) => setBrand({ ...brand, phone: e.target.value })}
+                                            placeholder="+1 (555) 123-4567"
+                                        />
+                                    </div>
+                                </div>
+
+                                {/* Social Media */}
+                                <div className="space-y-4">
+                                    <h4 className="h4 text-ukYellow">Social Media</h4>
+
+                                    <div>
+                                        <label className="label">Facebook URL</label>
+                                        <input
+                                            className="input"
+                                            value={brand.social?.facebook || ""}
+                                            onChange={(e) => setBrand({
+                                                ...brand,
+                                                social: { ...brand.social, facebook: e.target.value }
+                                            })}
+                                            placeholder="https://facebook.com/yourpage"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label className="label">Instagram URL</label>
+                                        <input
+                                            className="input"
+                                            value={brand.social?.instagram || ""}
+                                            onChange={(e) => setBrand({
+                                                ...brand,
+                                                social: { ...brand.social, instagram: e.target.value }
+                                            })}
+                                            placeholder="https://instagram.com/yourprofile"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label className="label">Twitter/X URL</label>
+                                        <input
+                                            className="input"
+                                            value={brand.social?.twitter || ""}
+                                            onChange={(e) => setBrand({
+                                                ...brand,
+                                                social: { ...brand.social, twitter: e.target.value }
+                                            })}
+                                            placeholder="https://twitter.com/yourprofile"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label className="label">YouTube URL</label>
+                                        <input
+                                            className="input"
+                                            value={brand.social?.youtube || ""}
+                                            onChange={(e) => setBrand({
+                                                ...brand,
+                                                social: { ...brand.social, youtube: e.target.value }
+                                            })}
+                                            placeholder="https://youtube.com/yourchannel"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label className="label">LinkedIn URL</label>
+                                        <input
+                                            className="input"
+                                            value={brand.social?.linkedin || ""}
+                                            onChange={(e) => setBrand({
+                                                ...brand,
+                                                social: { ...brand.social, linkedin: e.target.value }
+                                            })}
+                                            placeholder="https://linkedin.com/company/yourcompany"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Save Button */}
+                            <div className="mt-8 pt-6 border-t border-white/10">
                                 <button
                                     className="btn btn-yellow"
                                     onClick={async () => {
                                         try {
                                             await saveSetting("brand", brand);
-                                            alert("Brand saved");
+                                            alert("Brand settings saved successfully!");
                                         } catch (e) {
-                                            alert("Failed to save brand\n\n" + e.message);
+                                            alert("Failed to save brand settings\n\n" + e.message);
                                         }
                                     }}
                                 >
-                                    Save Brand
+                                    Save Brand Settings
                                 </button>
+                            </div>
+
+                            {/* Preview Section */}
+                            <div className="mt-8 pt-6 border-t border-white/10">
+                                <h4 className="h4 mb-4">Preview</h4>
+                                <div className="grid md:grid-cols-2 gap-6">
+                                    <div className="card p-4">
+                                        <h5 className="font-semibold mb-2">Brand Preview</h5>
+                                        <div className="flex items-center gap-3">
+                                            <img
+                                                src={brand.logo || "/logo.png"}
+                                                alt="Logo preview"
+                                                className="w-12 h-12 rounded-lg object-contain border border-white/10"
+                                                onError={(e) => e.target.src = "/logo.png"}
+                                            />
+                                            <div>
+                                                <div className="font-bold">{brand.name || "Organization Name"}</div>
+                                                <div className="text-sm opacity-70">{brand.email || "email@example.com"}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="card p-4">
+                                        <h5 className="font-semibold mb-2">Social Links Preview</h5>
+                                        <div className="flex gap-2">
+                                            {brand.social?.facebook && (
+                                                <a href={brand.social.facebook} className="p-2 bg-white/10 rounded-lg">
+                                                    <Facebook className="w-4 h-4" />
+                                                </a>
+                                            )}
+                                            {brand.social?.instagram && (
+                                                <a href={brand.social.instagram} className="p-2 bg-white/10 rounded-lg">
+                                                    <Instagram className="w-4 h-4" />
+                                                </a>
+                                            )}
+                                            {brand.social?.twitter && (
+                                                <a href={brand.social.twitter} className="p-2 bg-white/10 rounded-lg">
+                                                    <Twitter className="w-4 h-4" />
+                                                </a>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     )}
